@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +27,9 @@ import static android.widget.Toast.makeText;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.textView) TextView textView;
+    @BindView(R.id.weatherIcon) ImageView weatherIcon;
+
+
 
     private static final String DARK_SKY_KEY = BuildConfig.DARK_SKY_KEY;
     public static final String TAG = MainActivity.class.getSimpleName();
