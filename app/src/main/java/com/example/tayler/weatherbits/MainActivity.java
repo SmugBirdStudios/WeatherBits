@@ -1,11 +1,14 @@
 package com.example.tayler.weatherbits;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,11 +39,26 @@ public class MainActivity extends AppCompatActivity {
 
     private CurrentWeather mCurrentWeather;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        Typeface t = Typeface.createFromAsset(getAssets(),
+                "fonts/StarPerv.ttf");
+        TextView precipText = (TextView) findViewById(R.id.precipText);
+        precipText.setTypeface(t);
+        TextView degrees = (TextView) findViewById(R.id.degrees);
+        degrees.setTypeface(t);
+        TextView humidText = (TextView) findViewById(R.id.humidText);
+        humidText.setTypeface(t);
+        TextView precipChance = (TextView) findViewById(R.id.precipChance);
+        precipChance.setTypeface(t);
+        TextView humidity = (TextView) findViewById(R.id.humidity);
+        humidity.setTypeface(t);
+
 
 
         double latitude =  37.8267;
