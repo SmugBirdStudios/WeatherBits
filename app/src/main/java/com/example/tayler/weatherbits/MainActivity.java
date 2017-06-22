@@ -1,9 +1,12 @@
 package com.example.tayler.weatherbits;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +34,13 @@ import static android.widget.Toast.makeText;
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.weatherIcon) ImageView weatherIcon;
+    @BindView(R.id.degrees) TextView degrees;
+    @BindView(R.id.humidity) TextView humidity;
+    @BindView(R.id.precipChance) TextView precipChance;
+    @BindView(R.id.precipText) TextView precipText;
+    @BindView(R.id.humidText) TextView humidityText;
+    @BindView(R.id.background) ConstraintLayout background;
+
 
 
 
@@ -46,8 +56,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        Typeface t = Typeface.createFromAsset(getAssets(),
-                "fonts/StarPerv.ttf");
+        // setting a default font for app
+
+        Typeface t = Typeface.createFromAsset(getAssets(), "fonts/StarPerv.ttf");
         TextView precipText = (TextView) findViewById(R.id.precipText);
         precipText.setTypeface(t);
         TextView degrees = (TextView) findViewById(R.id.degrees);
@@ -61,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        double latitude =  37.8267;
-        double longitude = -122.423;
+        double latitude =  39.167107;
+        double longitude = -86.534359;
         String forecastUrl = "https://api.darksky.net/forecast/" + DARK_SKY_KEY + "/" + latitude + "," + longitude;
 
         if (isNetworkAvailable()) {
@@ -119,6 +130,9 @@ public class MainActivity extends AppCompatActivity {
         currentWeather.setPrecipChance(currently.getDouble("precipProbability"));
         currentWeather.setSummary(currently.getString("summary"));
         currentWeather.setTemperature(currently.getDouble("temperature"));
+        currentWeather.setTimeZone(timezone);
+
+        Log.d(TAG, currentWeather.getFormattedTime());
 
         return currentWeather;
     }

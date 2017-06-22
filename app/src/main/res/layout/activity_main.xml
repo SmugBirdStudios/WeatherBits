@@ -3,11 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.tayler.weatherbits.MainActivity"
-    tools:layout_editor_absoluteY="81dp"
-    tools:layout_editor_absoluteX="0dp">
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/weatherIcon"
@@ -26,33 +27,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:text="66"
         android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weatherIcon"
-        app:layout_constraintVertical_bias="0.114"
-        android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weatherIcon"
+        app:layout_constraintVertical_bias="0.114"/>
 
     <TextView
         android:id="@+id/precipChance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:text="15%"
         android:textSize="35sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weatherIcon"
-        app:layout_constraintVertical_bias="0.553"
-        android:layout_marginLeft="8dp"
+        app:layout_constraintHorizontal_bias="0.564"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/degrees"
-        android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.564"/>
+        app:layout_constraintTop_toBottomOf="@+id/weatherIcon"
+        app:layout_constraintVertical_bias="0.553"/>
 
     <TextView
         android:id="@+id/humidity"
