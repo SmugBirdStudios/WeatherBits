@@ -1,12 +1,19 @@
 package com.example.tayler.weatherbits;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,12 +36,14 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
 
 import static android.widget.Toast.makeText;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.weatherIcon) ImageView weatherIcon;
+    @BindView(R.id.weatherIcon) GifImageView weatherIcon;
     @BindView(R.id.degrees) TextView degrees;
     @BindView(R.id.humidity) TextView humidity;
     @BindView(R.id.precipChance) TextView precipChance;
@@ -43,9 +52,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.background) ConstraintLayout background;
 
 
-
-
     private static final String DARK_SKY_KEY = BuildConfig.DARK_SKY_KEY;
+
     public static final String TAG = MainActivity.class.getSimpleName();
 
     private CurrentWeather mCurrentWeather;
@@ -73,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
         humidity.setTypeface(t);
 
 
-
         double latitude =  39.167107;
         double longitude = -86.534359;
+
         String forecastUrl = "https://api.darksky.net/forecast/" + DARK_SKY_KEY + "/" + latitude + "," + longitude;
 
         if (isNetworkAvailable()) {
@@ -101,6 +109,12 @@ public class MainActivity extends AppCompatActivity {
 
                         if (response.isSuccessful()) {
                             mCurrentWeather = getCurrentDetails(jsonData);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateDisplay();
+                                }
+                            });
                         } else {
                             alertUserAboutError();
                         }
@@ -116,6 +130,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.network_unavailable_message, Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    private void updateDisplay() {
+        degrees.setText(mCurrentWeather.getTemperature() + "");
+        humidity.setText(mCurrentWeather.getHumidity() + "");
+        precipChance.setText(mCurrentWeather.getPrecipChance() + "%");
+        weatherIcon.setImageResource(mCurrentWeather.getIconId());
     }
 
     private CurrentWeather getCurrentDetails(String jsonData) throws JSONException {
@@ -155,4 +176,6 @@ public class MainActivity extends AppCompatActivity {
         AlertDialogFragment dialog = new AlertDialogFragment();
         dialog.show(getFragmentManager(), "error_dialog");
     }
+
+
 }
