@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.precipText) TextView precipText;
     @BindView(R.id.humidText) TextView humidityText;
     @BindView(R.id.background) ConstraintLayout background;
+    @BindView(R.id.refreshImageView)ImageView mRefreshImageView;
 
 
     private static final String DARK_SKY_KEY = BuildConfig.DARK_SKY_KEY;
@@ -64,6 +65,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        final double latitude =  39.167107;
+        final double longitude = -86.534359;
+
+        mRefreshImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getForecast(latitude, longitude);
+            }
+        });
 
 
         // setting a default font for app
@@ -81,9 +92,13 @@ public class MainActivity extends AppCompatActivity {
         humidity.setTypeface(t);
 
 
-        double latitude =  39.167107;
-        double longitude = -86.534359;
 
+
+        getForecast(latitude, longitude);
+
+    }
+
+    private void getForecast(double latitude, double longitude) {
         String forecastUrl = "https://api.darksky.net/forecast/" + DARK_SKY_KEY + "/" + latitude + "," + longitude;
 
         if (isNetworkAvailable()) {
@@ -129,12 +144,11 @@ public class MainActivity extends AppCompatActivity {
         else {
             Toast.makeText(this, R.string.network_unavailable_message, Toast.LENGTH_LONG).show();
         }
-
     }
 
     private void updateDisplay() {
         degrees.setText(mCurrentWeather.getTemperature() + "");
-        humidity.setText(mCurrentWeather.getHumidity() + "");
+        humidity.setText(mCurrentWeather.getHumidity() + "%");
         precipChance.setText(mCurrentWeather.getPrecipChance() + "%");
         weatherIcon.setImageResource(mCurrentWeather.getIconId());
     }
