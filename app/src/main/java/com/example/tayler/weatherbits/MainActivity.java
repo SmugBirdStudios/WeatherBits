@@ -15,6 +15,7 @@ import android.net.NetworkInfo;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.precipText) TextView precipText;
     @BindView(R.id.humidText) TextView humidityText;
     @BindView(R.id.background) ConstraintLayout background;
-    @BindView(R.id.refreshImageView)ImageView mRefreshImageView;
+    @BindView(R.id.swipeRefresh) SwipeRefreshLayout mSwipeRefreshLayout;
 
 
     private static final String DARK_SKY_KEY = BuildConfig.DARK_SKY_KEY;
@@ -69,10 +70,11 @@ public class MainActivity extends AppCompatActivity {
         final double latitude =  39.167107;
         final double longitude = -86.534359;
 
-        mRefreshImageView.setOnClickListener(new View.OnClickListener() {
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View v) {
+            public void onRefresh() {
                 getForecast(latitude, longitude);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
 
