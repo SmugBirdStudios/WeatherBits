@@ -12,6 +12,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -55,12 +57,35 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static final String DARK_SKY_KEY = BuildConfig.DARK_SKY_KEY;
-
     public static final String TAG = MainActivity.class.getSimpleName();
 
     private CurrentWeather mCurrentWeather;
 
-    //comment
+    LocationManager locationManager;
+
+    LocationListener locationListener;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            startListening();
+
+        }
+    }
+
+    public void startListening() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+
+            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        }
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,16 +93,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        final double latitude =  39.167107;
-        final double longitude = -86.534359;
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getForecast(latitude, longitude);
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
+//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                getForecast(latitude, longitude);
+//                mSwipeRefreshLayout.setRefreshing(false);
+//            }
+//        });
 
 
 
@@ -95,12 +118,64 @@ public class MainActivity extends AppCompatActivity {
         TextView humidity = (TextView) findViewById(R.id.humidity);
         humidity.setTypeface(t);
 
+            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
+            locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
 
+                    double lat = location.getLatitude();
+                    double lon = location.getLongitude();
 
-        getForecast(latitude, longitude);
+                    getForecast(lat,lon);
 
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            };
+
+            if (Build.VERSION.SDK_INT < 23) {
+
+                startListening();
+
+            } else {
+
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+                } else {
+
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+                    Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                    if (location != null){
+
+                        double lat = location.getLatitude();
+                        double lon = location.getLongitude();
+
+                        getForecast(lat,lon);
+
+                    }
+
+                }
+            }
     }
+
 
     private void getForecast(double latitude, double longitude) {
         String forecastUrl = "https://api.darksky.net/forecast/" + DARK_SKY_KEY + "/" + latitude + "," + longitude;
