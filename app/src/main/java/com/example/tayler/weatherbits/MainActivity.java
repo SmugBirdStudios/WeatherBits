@@ -59,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String DARK_SKY_KEY = BuildConfig.DARK_SKY_KEY;
     public static final String TAG = MainActivity.class.getSimpleName();
 
+    double latitude;
+    double longitude;
+
     private CurrentWeather mCurrentWeather;
 
     LocationManager locationManager;
@@ -94,13 +97,13 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
-//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                getForecast(latitude, longitude);
-//                mSwipeRefreshLayout.setRefreshing(false);
-//            }
-//        });
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getForecast(latitude, longitude);
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
 
 
@@ -124,10 +127,10 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onLocationChanged(Location location) {
 
-                    double lat = location.getLatitude();
-                    double lon = location.getLongitude();
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
 
-                    getForecast(lat,lon);
+                    getForecast(latitude,longitude);
 
                 }
 
@@ -165,10 +168,10 @@ public class MainActivity extends AppCompatActivity {
 
                     if (location != null){
 
-                        double lat = location.getLatitude();
-                        double lon = location.getLongitude();
+                        latitude = location.getLatitude();
+                        longitude = location.getLongitude();
 
-                        getForecast(lat,lon);
+                        getForecast(latitude,longitude);
 
                     }
 

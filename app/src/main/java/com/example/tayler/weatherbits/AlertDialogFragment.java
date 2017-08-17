@@ -6,9 +6,6 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
 
-/**
- * Created by jesspendley on 6/14/17.
- */
 
 public class AlertDialogFragment extends DialogFragment {
 

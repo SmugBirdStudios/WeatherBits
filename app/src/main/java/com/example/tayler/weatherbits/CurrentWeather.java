@@ -4,9 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-/**
- * Created by Tayler on 6/14/2017.
- */
 
 public class CurrentWeather {
     private String mIcon;
